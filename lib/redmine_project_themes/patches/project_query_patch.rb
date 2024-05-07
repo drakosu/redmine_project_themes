@@ -52,6 +52,6 @@ module RedmineProjectThemes
   end  #module
 end  #module
 
-unless ProjectQuery.included_modules.include?(RedmineProjectThemes::Patches::ProjectQueryPatch)
+if defined?(ProjectQuery) && !ProjectQuery.included_modules.include?(RedmineProjectThemes::Patches::ProjectQueryPatch)
   ProjectQuery.send(:include, RedmineProjectThemes::Patches::ProjectQueryPatch)
 end

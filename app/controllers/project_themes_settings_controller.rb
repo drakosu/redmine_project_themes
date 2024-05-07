@@ -30,7 +30,7 @@ class ProjectThemesSettingsController < ApplicationController
   def update
   
     begin
-      @project.update_attribute(:theme_id, params.dig(:project, :theme_id))
+      @project.update_attribute(:theme_id, params[:project].try(:[], :theme_id))
       flash[:notice]= l(:label_project_theme_sucessfully_updated, :project => @project.name)
       
     rescue Exception => e

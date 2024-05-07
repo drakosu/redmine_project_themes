@@ -53,7 +53,7 @@ Redmine::Plugin.register :redmine_project_themes do
   version '1.2.0'
   url 'https://github.com/HugoHasenbein/redmine_project_themes'
   author_url 'https://github.com/HugoHasenbein/redmine_project_themes'
-  requires_redmine version_or_higher: '3.4'
+  requires_redmine version_or_higher: '3.3.2'
 
   #---------------------------------------------------------------------------------------
   # Permissions
