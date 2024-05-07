@@ -27,9 +27,21 @@ module RedmineProjectThemes
         
         base.class_eval do
           unloadable
+
+          def get_project_theme(project=@project)
+            return nil unless project
+
+            case
+            when project.module_enabled?(:redmine_project_themes) && project.theme.present?
+              project.theme
+            when project.parent.present?
+              get_project_theme(project.parent)
+            else
+              nil
+            end
+          end
           
           def current_theme
-            
             #
             # set new @current_theme if..
             #   ..@current_theme is not set
@@ -37,7 +49,7 @@ module RedmineProjectThemes
             #
             unless instance_variable_defined?(:@current_theme) || instance_variable_defined?(:@current_project) && @current_project == @project
               @current_project = @project
-              @current_theme   = (@project && @project.module_enabled?(:redmine_project_themes) && @project.theme.present?) ? @project.theme : Redmine::Themes.theme(Setting.ui_theme)
+              @current_theme   = get_project_theme(@project) || Redmine::Themes.theme(Setting.ui_theme)
             end
             
             @current_theme
@@ -56,6 +68,3 @@ end
 unless Redmine::Themes::Helper.included_modules.include?(RedmineProjectThemes::Patches::RedmineThemesHelperPatch)
   Redmine::Themes::Helper.send(:include, RedmineProjectThemes::Patches::RedmineThemesHelperPatch)
 end
-
-
-
